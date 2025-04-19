@@ -1,5 +1,6 @@
 import Background from "@/assets/login2.png";
 import Victory from "@/assets/victory.svg";
+
 import {
   Tabs,
   TabsContent,
@@ -9,16 +10,52 @@ import {
 import { useState } from "react";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
-
+import {toast} from 'sonner'
+import { apiClient } from "../../lib/api-client";
+import { LOGIN_ROUTE, SIGNUP_ROUTE } from "../../utils/constaints";
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const handleLogin = async() => {
 
+  const validateSignup = () => {
+  if(!email.length){
+    toast.error('Email is required')
+    return false
+  }
+  if(!password.length){
+    toast.error('Password is Required')
+    return false
+  }
+  if(password !== confirmPassword){
+    toast.error('Password and Confirm Password should be same')
+    return false
+  }
+  return true
+  }
+  const validateLogin = () => {
+  if(!email.length){
+    toast.error('Email is required')
+    return false
+  }
+  if(!password.length){
+    toast.error('Password is Required')
+    return false
+  }
+
+  return true
   }
   const handleSignup = async() => {
-
+      if(validateSignup()){
+        const response = await apiClient.post(SIGNUP_ROUTE, {email, password}, {withCredentials : true})
+        console.log(response);
+      }
+  }
+  const handleLogin = async() => {
+      if(validateLogin()){
+        const response = await apiClient.post(LOGIN_ROUTE, {email, password}, {withCredentials : true})
+        console.log(response);
+      }
   }
   return (
     <div className="h-[100vh] w-[100vw] flex  items-center justify-center">
