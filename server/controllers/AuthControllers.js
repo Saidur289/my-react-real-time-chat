@@ -24,7 +24,7 @@ export const signup = async(request, response, next) => {
 
         })
            return response.status(200).json({
-            users: {
+            user: {
                 id: user.id,
                 email: user.email,
                 profileSetup: user.profileSetup,
@@ -44,11 +44,11 @@ export const login = async(request, response, next) => {
             return response.status(400).send("Email and Password are Required")
 
         }
-        const user = await User.find({email});
+        const user = await User.findOne({email});
         if(!user){
             return response.status(404).send("User of this email not found")
         }
-        const auth = await compare(password, user.password)
+        const auth = await compare(password,  user.password)
         if(!auth){
             return response.status(404).send("Password is Incorrect")
         }
@@ -59,7 +59,7 @@ export const login = async(request, response, next) => {
 
         })
            return response.status(201).json({
-            users: {
+            user: {
                 id: user.id,
                 email: user.email,
                 profileSetup: user.profileSetup,

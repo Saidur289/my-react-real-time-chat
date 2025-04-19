@@ -8,6 +8,8 @@ import MainLayout from "../Layout/MainLayout";
 import Auth from "../pages/Auth/Auth";
 import Profile from "../pages/Profile/Profile";
 import Chat from "../pages/Chat/Chat";
+import PrivateRoute from "./PrivateRoute";
+import AuthRoute from "./AuthRoute";
 
 
 const router = createBrowserRouter([
@@ -22,16 +24,16 @@ const router = createBrowserRouter([
       },
       {
         path: '/auth',
-        element: <Auth></Auth>,
+        element: <AuthRoute><Auth></Auth></AuthRoute>,
 
       },
       {
         path: '/profile',
-        element: <Profile></Profile>,
+        element: <PrivateRoute><Profile></Profile></PrivateRoute>,
       },
       {
         path: '/chat',
-        element: <Chat></Chat>
+        element: <PrivateRoute><Chat></Chat></PrivateRoute>
       }
     ]
   },
