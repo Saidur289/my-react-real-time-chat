@@ -75,3 +75,12 @@ export const login = async(request, response, next) => {
         return response.status(500).send("Internal Server Error")
     }
 }
+export const getUserInfo = async () => {
+    try {
+        
+    } catch (error) {
+        console.log('Error From Get user Info function Auth Controller',error);
+        return response.status(500).send("Internal Server Error");
+        
+    }
+}
