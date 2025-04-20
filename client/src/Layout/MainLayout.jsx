@@ -12,10 +12,20 @@ const MainLayout = () => {
   const getUserData = async() => {
      try {
         const response = await apiClient.get(GET_USER_INFO, {withCredentials: true})
+        
+        if(response.status === 200 && response.data.id){
+            setUserInfo(response.data)
+        }else{
+            setUserInfo(undefined)
+        }
         console.log({response});
      } catch (error) {
+        setUserInfo(undefined)
         console.log('Error from mainlayout component', error);
         toast.error(error.message)
+     }
+     finally{
+        setLoading(false)
      }
    }
     if(!userInfo){

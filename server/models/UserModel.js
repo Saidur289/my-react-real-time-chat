@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    colors: {
+    color: {
         type: Number,
 
         required: false,

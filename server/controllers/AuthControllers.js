@@ -75,11 +75,51 @@ export const login = async(request, response, next) => {
         return response.status(500).send("Internal Server Error")
     }
 }
-export const getUserInfo = async () => {
+export const getUserInfo = async (request, response, next) => {
     try {
+        // console.log(request.userId, 'get user function');
+        const userData = await User.findById(request.userId);
+        if(!userData){
+            return  response.status(500).send("User with the given id not found")
+        }
         
+        return response.status(200).json({    
+                id: userData.id,
+                email: userData.email,
+                profileSetup: userData.profileSetup,
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                image: userData.image,
+                color: userData.color
+           })
     } catch (error) {
-        console.log('Error From Get user Info function Auth Controller',error);
+        console.log('Error From Get userData Info function Auth Controller',error);
+        return response.status(500).send("Internal Server Error");
+        
+    }
+}
+export const updateProfile = async (request, response, next) => {
+    try {
+        // find id from token  
+        const {userId} = request
+        const {firstName, lastName, color} = request.body
+        if(!firstName || !lastName ){
+            return response.status(400).send('First Name, Last Name and Color Required')
+        }
+        const userData = await User.findByIdAndUpdate(userId, {firstName, lastName, color, profileSetup: true}, {new: true, runValidators: true})
+       
+        
+        return response.status(200).json({    
+                id: userData.id,
+                email: userData.email,
+                profileSetup: userData.profileSetup,
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                image: userData.image,
+                color: userData.color
+           })
+    } catch (error) {
+        console.log('Error From Get profile update  function Auth Controller',error);
         return response.status(500).send("Internal Server Error");
         
     }
