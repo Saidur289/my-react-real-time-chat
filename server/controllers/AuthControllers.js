@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/UserModel.js'
 import { compare } from 'bcrypt'
+import {renameSync, unlinkSync} from 'fs'
 // create jwt token for validate 
 const maxAge = 3 * 24 * 60 * 60 *1000
 const createToken = (email, userId) => {
@@ -118,6 +119,46 @@ export const updateProfile = async (request, response, next) => {
                 image: userData.image,
                 color: userData.color
            })
+    } catch (error) {
+        console.log('Error From Get profile update  function Auth Controller',error);
+        return response.status(500).send("Internal Server Error");
+        
+    }
+}
+export const addProfileImage = async (request, response, next) => {
+    try {
+          if(!request.file){
+            return response.status(400).send('File is Required')
+
+          }
+          const date = Date.now()
+          let fileName = 'uploads/profiles/' + date + request.file.originalname
+          renameSync(request.file.path, fileName)
+          const updateUser = await User.findByIdAndUpdate(request.userId, {image: fileName}, {new: true, runValidators: true})
+          console.log(updateUser.image, 'add profile image');
+        return response.status(200).json({    
+                image: updateUser.image,
+                
+           })
+    } catch (error) {
+        console.log('Error From add  profile update  function Auth Controller',error);
+        return response.status(500).send("Internal Server Error");
+        
+    }
+}
+export const removeProfileImage = async (request, response, next) => {
+    try {
+        const {userId} = request
+        const user = await User.findById(userId)
+        if(!user){
+            return response.status(400).send('User Not Found')
+        }
+       if(user.image){
+        unlinkSync(user.image)
+       }
+        user.image = null;
+        await user.save()
+       return response.status(200).send('Profile image removed successfully')
     } catch (error) {
         console.log('Error From Get profile update  function Auth Controller',error);
         return response.status(500).send("Internal Server Error");
