@@ -165,3 +165,13 @@ export const removeProfileImage = async (request, response, next) => {
         
     }
 }
+export const logout = async (request, response, next) => {
+    try {
+       response.cookie("jwt", "", {maxAge: 1, secure: true, sameSites: 'None'})
+       return response.status(200).send('Logout successfully')
+    } catch (error) {
+        console.log('Error From Get profile update  function Auth Controller',error);
+        return response.status(500).send("Internal Server Error");
+        
+    }
+}

@@ -30,6 +30,7 @@ const MainLayout = () => {
    }
     if(!userInfo){
         getUserData()
+       
         
     }else{
         setLoading(false)

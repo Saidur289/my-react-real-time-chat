@@ -1,8 +1,9 @@
+import ProfileInfo from "./components/profile-info/ProfileInfo";
 
 
 const ContactsContainer = () => {
     return (
-        <div className="relative md:w-[35vw] lg:w-[30vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b] w-full">
+        <div className="relative md:w-[40vw] lg:w-[35vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b] w-full">
             <div className="pt-3">
             <Logo/>
             </div>
@@ -16,6 +17,7 @@ const ContactsContainer = () => {
                 <Title text='Channels'/>
             </div>
             </div>
+            <ProfileInfo/>
         </div>
     );
 };
@@ -54,7 +56,7 @@ const Logo = () => {
             fill="#a16ee8"
           ></path>{" "}
         </svg>
-        <span className="text-3xl font-semibold ">Synchronous</span>
+        <span className="text-3xl font-semibold ">TeamBridge</span>
       </div>
     );
   };
