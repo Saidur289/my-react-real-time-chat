@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 import authRoutes from './routes/AuthRoutes.js'
 import morgan from 'morgan'
+import contactsRoutes from './routes/ContactRoute.js'
 
 dotenv.config();
 const app = express()
@@ -20,6 +21,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(morgan('dev'))
 app.use('/api/auth', authRoutes)
+app.use('/api/contacts',contactsRoutes)
 const server = app.listen(port, () => {
     console.log('Server is running port', port);
 })

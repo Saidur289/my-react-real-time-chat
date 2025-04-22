@@ -19,8 +19,10 @@ import router from './Routes/Routes.jsx'
 import { RouterProvider } from 'react-router-dom'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+
+    <>
     <RouterProvider router={router} />
     <Toaster closeButton></Toaster>
-  </StrictMode>,
+    </>
+ 
 )

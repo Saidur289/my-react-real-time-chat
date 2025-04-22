@@ -1,3 +1,4 @@
+import NewDm from "./components/profile-info/new-dm/NewDm";
 import ProfileInfo from "./components/profile-info/ProfileInfo";
 
 
@@ -15,6 +16,7 @@ const ContactsContainer = () => {
             <div className="my-5">
             <div className="flex items-center justify-between pr-10">
                 <Title text='Channels'/>
+                <NewDm/>
             </div>
             </div>
             <ProfileInfo/>
