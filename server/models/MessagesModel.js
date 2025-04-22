@@ -11,12 +11,12 @@ const messageSchema = new mongoose.Schema({
         ref: "Users",
         required: false,
     },
-    messageTypes: {
+    messageType: {
         type:String,
         enum: ["text", "file"],
         required: true,
     },
-    contents: {
+    content: {
         type: String,
         required: function (){
             return this.messageType === 'text';
