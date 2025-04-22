@@ -35,8 +35,9 @@ const NewDm = () => {
       const response = await apiClient.post(SEARCH_CONTACTS_ROUTE, {searchTerm}, {withCredentials: true})
       if(response.status=== 200 && response.data.contacts){
         setSearchedContact(response.data.contacts)
-      } else{
-        searchContacts([])
+      }
+      else{
+        setSearchedContact([])
       }
     }
    } catch (error) {
@@ -77,7 +78,8 @@ const NewDm = () => {
           <div>
             <Input onChange={(e) =>searchContacts(e.target.value)} className={"rounded-lg p-6 bg-[#2c2e3b] border-none"} placeholder='Search Contact'/>
           </div>
-          <ScrollArea className={'h-[250]'}>
+          {searchedContact.length > 0 && (
+            <ScrollArea className={'h-[250]'}>
             <div className="flex flex-col gap-5">
               {searchedContact.map((contact, index) => <div onClick={() => selectNewContact(contact)} className="flex gap-3 items-center cursor-pointer"key={index}>
                 {/* first child  */}
@@ -119,6 +121,7 @@ const NewDm = () => {
 
             </div>
           </ScrollArea>
+          )}
           {
             searchedContact.length <=0 && (
                 <div className="flex-1  md:flex flex-col justify-center items-center mt-5 duration-1000 transition-all">
