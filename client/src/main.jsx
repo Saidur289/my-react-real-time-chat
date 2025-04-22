@@ -17,12 +17,15 @@ export default function RootLayout({ children }) {
 import './index.css'
 import router from './Routes/Routes.jsx'
 import { RouterProvider } from 'react-router-dom'
+import { SocketProvider } from './context/SocketContext.jsx'
 
 createRoot(document.getElementById('root')).render(
 
     <>
-    <RouterProvider router={router} />
-    <Toaster closeButton></Toaster>
+   <SocketProvider>
+   <RouterProvider router={router} />
+   <Toaster closeButton></Toaster>
+   </SocketProvider>
     </>
  
 )
