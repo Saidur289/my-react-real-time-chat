@@ -21,9 +21,9 @@ const setupSocket = (server) => {
     const sendMessage = async(message) => {
         const senderSocketId = userSocketMap.get(message.sender)
         const recipientSocketId = userSocketMap.get(message.recipient)
-        console.log("message from all id ", senderSocketId, recipientSocketId);
+        // console.log("message from all id ", senderSocketId, recipientSocketId);
         const createMessage = await Message.create(message)
-        console.log("send message from :", createMessage._id);
+        // console.log("send message from :", createMessage._id);
         const messageData = await Message.findById(createMessage._id).populate("sender", "id email firstName lastName image color").populate("recipient", "id email firstName lastName image color");
         if(recipientSocketId){
             io.to(recipientSocketId).emit('receiveMessage', messageData)
