@@ -1,11 +1,30 @@
 import { useEffect, useRef } from "react";
 import { useAppStore } from "../../../../../../store";
 import moment from 'moment'
+import { apiClient } from "../../../../../../lib/api-client";
+import { GET_ALL_MESSAGES_ROUTE } from "../../../../../../utils/constaints";
 
 const MessageContainer = () => {
-    const { selectedChatMessages,  selectedChatData,  selectedChatType}  = useAppStore()
+    const { selectedChatMessages,  selectedChatData,  selectedChatType , userInfo, setSelectedChatMessages }  = useAppStore()
     const scrollRef = useRef()
     console.log("selected chat messages", selectedChatMessages);
+    useEffect(() => {
+    const getMessages = async() => {
+  try {
+    const response = await apiClient.post(GET_ALL_MESSAGES_ROUTE, {id: selectedChatData._id}, {withCredentials: true})
+    if(response.data.messages){
+        setSelectedChatMessages(response.data.messages)
+    }
+  } catch (error) {
+    console.log(error.response, "error from get messages function");
+  }
+    }
+    if(selectedChatData._id){
+       if(selectedChatType === "contact") getMessages()
+    }
+     
+    }, [selectedChatData, selectedChatType,setSelectedChatMessages])
+    
     useEffect(() => {
         if(scrollRef.current){
             scrollRef.current.scrollIntoView({behavior: "smooth"})
