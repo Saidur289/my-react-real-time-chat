@@ -8,6 +8,7 @@ import morgan from 'morgan'
 import contactsRoutes from './routes/ContactRoute.js'
 import setupSocket from './socket.js'
 import messagesRoutes from './routes/MessagesRoutes.js'
+import channelRoutes from './routes/ChannelRoutes.js'
 
 dotenv.config();
 const app = express()
@@ -26,6 +27,7 @@ app.use(morgan('dev'))
 app.use('/api/auth', authRoutes)
 app.use('/api/contacts',contactsRoutes)
 app.use('/api/messages', messagesRoutes)
+app.use('/api/channel', channelRoutes)
 const server = app.listen(port, () => {
     console.log('Server is running port', port);
 })

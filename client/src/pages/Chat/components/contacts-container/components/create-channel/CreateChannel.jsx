@@ -16,7 +16,7 @@ import {toast} from 'sonner'
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../../../../components/ui/tooltip";
 import { apiClient } from "../../../../../../lib/api-client";
-import { GET_ALL_CONTACTS_ROUTE, SEARCH_CONTACTS_ROUTE } from "../../../../../../utils/constaints";
+import { CREATE_CHANNEL_ROUTE, GET_ALL_CONTACTS_ROUTE, SEARCH_CONTACTS_ROUTE } from "../../../../../../utils/constaints";
 import { useAppStore } from "../../../../../../store";
 import { Input } from "../../../../../../components/ui/input";
 import { Button } from "../../../../../../components/ui/button";
@@ -24,7 +24,7 @@ import MultipleSelector from "../../../../../../components/ui/multipleselect";
 
 const CreateChannel = () => {
 
-  const {setSelectedChatData,   setSelectedChatType} = useAppStore()
+  const {setSelectedChatData,   setSelectedChatType,  addChannel} = useAppStore()
   const [searchedContact, setSearchedContact] = useState([])
   const [allContacts, setAllContacts] = useState([])
   const [selectedContacts, setSelectedContacts] = useState([])
@@ -39,7 +39,22 @@ const CreateChannel = () => {
     getData()
   }, [])
   const createChannel = async() => {
+try {
+   if(channelName.length>0 && selectedContacts.length>0){
+    const response = await apiClient.get(CREATE_CHANNEL_ROUTE, {name: channelName, members: selectedContacts.map((contact) => contact.value)} ,{withCredentials: true})
+    if(response.status === 200 ){
+        setChannelName("");
+        setSelectedContacts([])
+        setNewChannelModal(false)
+        addChannel(response.data.channel)
+    }
+   }
+   
 
+} catch (error) {
+    console.log("error from create contact function", {error});
+    toast.error(error.message)
+}   
   }
   // functionality for search filter contact -1 
   const searchContacts = async(searchTerm) => {
