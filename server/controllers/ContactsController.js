@@ -86,3 +86,19 @@ export const getContactsForDMList = async (request, response, next) => {
         
     }
 }
+export const getAllContact = async (request, response, next) => {
+    try {
+     const users = await User.find({_id: {$ne: request.userId}}, "firstName lastName _id email");
+     const contacts = users.map((user) => ({
+        label: user.firstName ? `${user.firstName} ${user. lastName}`: `${user.email}`,
+        value: user._id,
+     }))
+     
+    //  console.log({contacts}, "show in get all contacts ");
+       return response.status(200).json({contacts})
+    } catch (error) {
+        console.log('Error From get all contacts   function Contacts Controller',error);
+        return response.status(500).send("Internal Server Error");
+        
+    }
+}
