@@ -37,6 +37,7 @@ const MessageBar = () => {
 
 
         })
+        setMessage("")
      }
     }
     return (

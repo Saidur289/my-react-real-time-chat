@@ -73,6 +73,7 @@ export const getContactsForDMList = async (request, response, next) => {
                 color: "$contactInfo.color",
             },
         },
+
         {
             $sort: {lastMessageTime: -1},
         },

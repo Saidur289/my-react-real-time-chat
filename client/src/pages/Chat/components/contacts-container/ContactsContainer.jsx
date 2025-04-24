@@ -3,14 +3,19 @@ import NewDm from "./components/profile-info/new-dm/NewDm";
 import ProfileInfo from "./components/profile-info/ProfileInfo";
 import { apiClient } from "../../../../lib/api-client";
 import {GET_CONTACTS_ROUTES } from "../../../../utils/constaints";
+import { useAppStore } from "../../../../store";
+import ContactList from "../../../../components/ui/ContactList";
 
 
 const ContactsContainer = () => {
+  const {setDirectMessagesContacts, directMessagesContacts} = useAppStore()
   useEffect(() => {
     const getContacts = async() => {
       const response = await apiClient.get(GET_CONTACTS_ROUTES, {withCredentials: true})
       if(response.data.contacts){
-        console.log(response.data.contacts);
+        // console.log(response.data.contacts);
+        setDirectMessagesContacts(response.data.contacts)
+
       }
     } 
     getContacts()
@@ -23,13 +28,18 @@ const ContactsContainer = () => {
             <div className="my-5">
             <div className="flex items-center justify-between pr-10">
                 <Title text='Direct Messages'/>
+                <NewDm/>
+            </div>
+            <div className="max-h-[30vh] overflow-y-auto scroll-smooth">
+             <ContactList contacts={directMessagesContacts}/>
             </div>
             </div>
             <div className="my-5">
             <div className="flex items-center justify-between pr-10">
                 <Title text='Channels'/>
-                <NewDm/>
+                
             </div>
+
             </div>
             <ProfileInfo/>
         </div>
