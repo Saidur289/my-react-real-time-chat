@@ -7,6 +7,7 @@ import { useSocket } from "../../../../../../context/SocketContext";
 import { useAppStore } from "../../../../../../store";
 import { apiClient } from "../../../../../../lib/api-client";
 import { UPLOAD_FILE_ROUTE } from "../../../../../../utils/constaints";
+import { data } from "react-router-dom";
 
 const MessageBar = () => {
     const [message, setMessage] = useState('')
@@ -14,7 +15,7 @@ const MessageBar = () => {
     const emojiRef = useRef()
     const fileInputRef = useRef()
     const [emojiPickerOpen, setEmojiPickerOpen] = useState(false)
-    const {selectedChatData, selectedChatType, userInfo} = useAppStore()
+    const {selectedChatData, selectedChatType, userInfo, setFileUploadProgress,  setIsUploading} = useAppStore()
     useEffect(() => {
         function handleClickOutside(event){
             if(emojiRef.current && !emojiRef.current.contains(event.target))
@@ -55,8 +56,12 @@ const MessageBar = () => {
     if(file){
         const formData = new FormData()
         formData.append("file", file)
-        const response = await apiClient.post(UPLOAD_FILE_ROUTE, formData, {withCredentials: true})
+        setIsUploading(true)
+        const response = await apiClient.post(UPLOAD_FILE_ROUTE, formData, {withCredentials: true , onUploadProgress: (data) => {
+            setFileUploadProgress(Math.round(100 * data.loaded)/ data.total)
+        }})
         if(response.status === 200 && response.data){
+            setIsUploading(false)
             if(selectedChatType === 'contact'){
                 socket.emit("sendMessage", {
                     sender: userInfo.id,
@@ -71,6 +76,7 @@ const MessageBar = () => {
         }
     }
    } catch (error) {
+    setIsUploading(false)
     console.log({error}, "error from handle attachment change function");
    }
     }

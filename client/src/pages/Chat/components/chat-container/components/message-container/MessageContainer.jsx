@@ -8,7 +8,7 @@ import { IoMdArrowRoundDown } from "react-icons/io";
 import { IoCloseSharp } from "react-icons/io5";
 
 const MessageContainer = () => {
-    const { selectedChatMessages,  selectedChatData,  selectedChatType , userInfo, setSelectedChatMessages }  = useAppStore()
+    const { selectedChatMessages,  selectedChatData,  selectedChatType , userInfo, setSelectedChatMessages, setFileDownloadingProgress, setIsDownloading }  = useAppStore()
     const scrollRef = useRef()
     // state for show image big 
     const [showImage, setShowImage] = useState(false)
@@ -67,7 +67,13 @@ const MessageContainer = () => {
     }
     // function for download file 
     const downloadFile = async(url) => {
-    const response = await apiClient.get(`${HOST}/${url}`, {responseType: "blob"})
+        setIsDownloading(true)
+        setFileDownloadingProgress(0)
+    const response = await apiClient.get(`${HOST}/${url}`, {responseType: "blob", onDownloadProgress: (progressEvent) => {
+     const {loaded, total} = progressEvent
+     const percentCompleted = Math.round((loaded * 100)/total)
+     setFileDownloadingProgress(percentCompleted)   
+    }})
     const urlBlob = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
     link.href = urlBlob
@@ -77,6 +83,8 @@ const MessageContainer = () => {
     link.click();
     link.remove()
     window.URL.revokeObjectURL(urlBlob)
+    setIsDownloading(false)
+    setFileDownloadingProgress(0)
     
     }
     // function for send message 

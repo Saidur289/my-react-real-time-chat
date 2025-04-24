@@ -13,7 +13,7 @@ const ContactList = ({contacts, isChannel=false}) => {
         if(selectedChatData && selectedChatData._id !== contact._id){
             setSelectedChatMessages([])
         }
-        console.log(contact);
+        // console.log(contact);
 
     }
 
