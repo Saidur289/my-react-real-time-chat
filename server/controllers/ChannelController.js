@@ -53,7 +53,7 @@ export const getChannelMessages = async (request, response, next) => {
         // select: "firstName lastName email _id image color"
       },
      });
-     console.log("channels name info", {channel});
+    //  console.log("channels name info", {channel});
      if(!channel){
       return response.status(404).send("Channel not found")
      }

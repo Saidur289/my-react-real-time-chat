@@ -52,16 +52,22 @@ const Auth = () => {
   return true
   }
   const handleSignup = async() => {
+     try {
       if(validateSignup()){
         const response = await apiClient.post(SIGNUP_ROUTE, {email, password}, {withCredentials : true})
         if(response.status === 201){
           setUserInfo(response.data.user)
           navigate('/profile')
-        }
+      }
         console.log({response});
       }
+     } catch (error) {
+      console.log({error});
+      toast.error(error.response.data)
+     }
   }
   const handleLogin = async() => {
+     try {
       if(validateLogin()){
         const response = await apiClient.post(LOGIN_ROUTE, {email, password}, {withCredentials : true})
         if(response.data.user.id){
@@ -69,8 +75,13 @@ const Auth = () => {
           if(response.data.user.profileSetup) navigate('/chat')
             else navigate('/profile')
         }
-        console.log(response);
+        // console.log(response);
       }
+     } catch (error) {
+      console.log({error}, "some issue");
+      toast.error(error.response.data)
+      // console.log(error.response);
+     }
   }
   return (
     <div className="h-[100vh] w-[100vw] flex  items-center justify-center">

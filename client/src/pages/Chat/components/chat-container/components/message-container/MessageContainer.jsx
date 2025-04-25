@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAppStore } from "../../../../../../store";
 import moment from "moment";
 import { apiClient } from "../../../../../../lib/api-client";
+import {toast} from "sonner"
 import {
   GET_ALL_MESSAGES_ROUTE,
   GET_CHANNEL_MESSAGES,
@@ -43,7 +44,7 @@ const MessageContainer = () => {
           setSelectedChatMessages(response.data.messages);
         }
       } catch (error) {
-        console.log(error.response, "error from get messages function");
+        console.log({error}, "error from get messages function");
       }
     };
     // get messages for channel part step - 2
@@ -58,7 +59,8 @@ const MessageContainer = () => {
               setSelectedChatMessages(response.data.messages);
             }
           } catch (error) {
-            console.log(error.response, "error from get messages function");
+            console.log({error}, "error from get messages function");
+            toast.error(error.message)
           }
     }
     if (selectedChatData._id) {
@@ -183,7 +185,7 @@ const MessageContainer = () => {
     </div>
   );
   const renderChannelMessages = (message) => {
-    console.log({message}, "from channel message");
+    // console.log({message}, "from channel message");
     return (
       <div
         className={`mt-5 ${

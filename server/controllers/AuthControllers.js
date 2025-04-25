@@ -40,7 +40,7 @@ export const signup = async(request, response, next) => {
 export const login = async(request, response, next) => {
     try {
         const {email, password} = request.body
-        console.log('show from sign up page authcontroller', email, password);
+        // console.log('show from sign up page authcontroller', email, password);
         if(!email || !password){
             return response.status(400).send("Email and Password are Required")
 
@@ -79,13 +79,15 @@ export const login = async(request, response, next) => {
 export const getUserInfo = async (request, response, next) => {
     try {
         // console.log(request.userId, 'get user function');
+        // console.log();
+        // const token = request.cookie.jwt
+        // console.log(token, "hello");
         const userData = await User.findById(request.userId);
         if(!userData){
             return  response.status(500).send("User with the given id not found")
         }
         
         return response.status(200).json({    
-                id: userData.id,
                 email: userData.email,
                 profileSetup: userData.profileSetup,
                 firstName: userData.firstName,
