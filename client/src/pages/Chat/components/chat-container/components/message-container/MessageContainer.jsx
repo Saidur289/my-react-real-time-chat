@@ -4,6 +4,7 @@ import moment from "moment";
 import { apiClient } from "../../../../../../lib/api-client";
 import {
   GET_ALL_MESSAGES_ROUTE,
+  GET_CHANNEL_MESSAGES,
   HOST,
 } from "../../../../../../utils/constaints";
 import { MdFolderZip } from "react-icons/md";
@@ -30,6 +31,7 @@ const MessageContainer = () => {
 //   console.log("selected chat messages",{});
   // fetch for get all message data step - 1
   useEffect(() => {
+    // get messages for contact part step - 1
     const getMessages = async () => {
       try {
         const response = await apiClient.post(
@@ -44,8 +46,24 @@ const MessageContainer = () => {
         console.log(error.response, "error from get messages function");
       }
     };
+    // get messages for channel part step - 2
+    const getChannelMessages = async() => {
+        try {
+            const response = await apiClient.get(
+              `${GET_CHANNEL_MESSAGES}/${selectedChatData._id}`,
+              
+              { withCredentials: true }
+            );
+            if (response.data.messages) {
+              setSelectedChatMessages(response.data.messages);
+            }
+          } catch (error) {
+            console.log(error.response, "error from get messages function");
+          }
+    }
     if (selectedChatData._id) {
       if (selectedChatType === "contact") getMessages();
+      else if (selectedChatType === 'channel') getChannelMessages()
     }
   }, [selectedChatData, selectedChatType, setSelectedChatMessages]);
   // function  for after send message auto scroll  step - 2
