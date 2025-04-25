@@ -58,7 +58,7 @@ const Auth = () => {
         if(response.status === 201){
           setUserInfo(response.data.user)
           navigate('/profile')
-      }
+        }
         console.log({response});
       }
      } catch (error) {
