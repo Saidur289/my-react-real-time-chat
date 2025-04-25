@@ -32,6 +32,8 @@ const setupSocket = (server) => {
             io.to(senderSocketId).emit("receiveMessage", messageData)
         }
     }
+    // channel message function 
+    
     io.on('connection', (socket) => {
         const userId = socket.handshake.query.userId
         // console.log("when connection made:", userId);
