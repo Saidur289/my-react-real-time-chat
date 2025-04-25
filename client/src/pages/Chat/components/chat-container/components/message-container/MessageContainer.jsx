@@ -8,8 +8,11 @@ import { IoMdArrowRoundDown } from "react-icons/io";
 import { IoCloseSharp } from "react-icons/io5";
 
 const MessageContainer = () => {
+
+    
     const { selectedChatMessages,  selectedChatData,  selectedChatType , userInfo, setSelectedChatMessages, setFileDownloadingProgress, setIsDownloading }  = useAppStore()
-    const scrollRef = useRef()
+    // console.log(userInfo);
+     const scrollRef = useRef()
     // state for show image big 
     const [showImage, setShowImage] = useState(false)
     const [imageURL, setImageURL] = useState(null)
@@ -60,6 +63,7 @@ const MessageContainer = () => {
                         selectedChatType === "contact" && renderDMMessages(message)
                         
                     }
+                    {selectedChatType === 'channel' && renderChannelMessages(message)}
 
                 </div>
             )
@@ -108,6 +112,18 @@ const MessageContainer = () => {
 
         </div>
     )
+    const renderChannelMessages = (message) => {
+        return (
+            <div className={`mt-5 ${message.sender._id === userInfo.id ? "text-left": "text-right"}`}>
+                {message.messageType === "text" && (
+             <div className={`${message.sender._id !== userInfo.id ? "bg-[#8417ff]/5 text-[#8417ff] border-[#8417ff]/50": "bg-[#2a2b33]/5 text-[#ffffff]/50 border-[#ffffff]/20"} border inline-block p-4 rounded my-1 max-w-[50%] break-words`}>
+             {message.content}
+         </div>
+           )}  
+
+            </div>
+        )
+    }
 
     
     return (
