@@ -39,7 +39,7 @@ const ContactList = ({contacts, isChannel=false}) => {
                                   >
                                     {contact?.firstName
                                       ? contact?.firstName.split("").shift()
-                                      : contact.email.split("").shift()}
+                                      : contact.email}
                                   </div>
                                 )}
                               </Avatar>
@@ -52,7 +52,7 @@ const ContactList = ({contacts, isChannel=false}) => {
                                 )
                             }
                              {
-                                        isChannel ? <span>{contact.name}</span> : <span>{`${contact.firstName} ${contact.lastName}`}</span>
+                                        isChannel ? <span>{contact.name}</span> : <span>{contact.firstName ? `${contact.firstName} ${contact.lastName}`: contact.email}</span>
                                        } 
 
                         </div>

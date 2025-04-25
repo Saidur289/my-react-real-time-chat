@@ -20,11 +20,12 @@ export const SocketProvider = ({children}) => {
             console.log("Connection to socket server");
         });
         const handleReceiveMessage = (message) => {
-            const {selectedChatData, selectedChatType, addMessage} = useAppStore.getState()
+            const {selectedChatData, selectedChatType, addMessage, addContactsInDMContacts} = useAppStore.getState()
             if(selectedChatType !== undefined && (selectedChatData._id === message.sender._id || selectedChatData._id === message.recipient._id)){
                 console.log("message receive", message);
                 addMessage(message);
             }
+            addContactsInDMContacts(message)
         }
         // function for receive channel message 
         const handleReceiveChannelMessage = (message) => {
