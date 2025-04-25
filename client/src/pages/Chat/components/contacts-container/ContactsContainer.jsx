@@ -2,14 +2,14 @@ import { useEffect } from "react";
 import NewDm from "./components/profile-info/new-dm/NewDm";
 import ProfileInfo from "./components/profile-info/ProfileInfo";
 import { apiClient } from "../../../../lib/api-client";
-import {GET_CONTACTS_ROUTES } from "../../../../utils/constaints";
+import {GET_CONTACTS_ROUTES, GET_USER_CHANNEL_ROUTE } from "../../../../utils/constaints";
 import { useAppStore } from "../../../../store";
 import ContactList from "../../../../components/ui/ContactList";
 import CreateChannel from "./components/create-channel/CreateChannel";
 
 
 const ContactsContainer = () => {
-  const {setDirectMessagesContacts, directMessagesContacts} = useAppStore()
+  const { setChannels,setDirectMessagesContacts, directMessagesContacts, channels} = useAppStore()
   useEffect(() => {
     const getContacts = async() => {
       const response = await apiClient.get(GET_CONTACTS_ROUTES, {withCredentials: true})
@@ -19,8 +19,17 @@ const ContactsContainer = () => {
 
       }
     } 
+    const getChannels = async() => {
+      const response = await apiClient.get(GET_USER_CHANNEL_ROUTE, {withCredentials: true})
+      if(response.data.channels){
+        // console.log(response.data.contacts);
+        setChannels(response.data.contacts)
+
+      }
+    } 
     getContacts()
-  }, [])
+    getChannels()
+  }, [setChannels, setDirectMessagesContacts])
     return (
         <div className="relative md:w-[40vw] lg:w-[35vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b] w-full">
             <div className="pt-3">
@@ -39,6 +48,9 @@ const ContactsContainer = () => {
             <div className="flex items-center justify-between pr-10">
                 <Title text='Channels'/>
                 <CreateChannel/>
+            </div>
+            <div className="max-h-[30vh] overflow-y-auto scroll-smooth">
+             <ContactList contacts={channels} isChannel={true}/>
             </div>
 
             </div>
