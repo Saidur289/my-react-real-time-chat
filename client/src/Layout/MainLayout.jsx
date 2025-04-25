@@ -22,7 +22,7 @@ const MainLayout = () => {
      } catch (error) {
         setUserInfo(undefined)
         console.log('Error from mainlayout component', error);
-        toast.error(error.response.data)
+        toast.error(error.message)
      }
      finally{
         setLoading(false)
@@ -30,7 +30,7 @@ const MainLayout = () => {
    }
     if(!userInfo){
         getUserData()
-       
+       setLoading(true)
         
     }else{
         setLoading(false)

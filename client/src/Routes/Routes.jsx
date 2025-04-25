@@ -17,11 +17,11 @@ const router = createBrowserRouter([
     path: "/",
     element: <MainLayout></MainLayout>,
     children: [
-      {
-        path: '/',
-        element: <AuthRoute><Auth></Auth></AuthRoute>,
+      // {
+      //   path: '/',
+      //   element: <AuthRoute><Auth></Auth></AuthRoute>,
 
-      },
+      // },
       {
         path: '/auth',
         element: <AuthRoute><Auth></Auth></AuthRoute>,

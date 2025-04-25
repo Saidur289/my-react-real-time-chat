@@ -1,4 +1,7 @@
 export const createAuthSlice = (set) => ({
     userInfo: undefined,
-    setUserInfo: (userInfo) => set({userInfo})
+    loading: true,
+    setUserInfo: (userInfo) => set({userInfo}),
+    setLoading: (value) => set({ loading: value }), // ✅ Add this
+   
 })
