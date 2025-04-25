@@ -23,7 +23,7 @@ const ContactsContainer = () => {
       const response = await apiClient.get(GET_USER_CHANNEL_ROUTE, {withCredentials: true})
       if(response.data.channels){
         // console.log(response.data.contacts);
-        setChannels(response.data.contacts)
+        setChannels(response.data.channels)
 
       }
     } 
