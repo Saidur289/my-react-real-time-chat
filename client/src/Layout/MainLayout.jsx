@@ -31,7 +31,7 @@ const MainLayout = () => {
         }else{
             setUserInfo(undefined)
         }
-        console.log({response});
+        // console.log({response});
      } catch (error) {
         setUserInfo(undefined)
         console.log('Error from mainlayout component', error);
