@@ -48,21 +48,35 @@ const MessageContainer = () => {
       }
     };
     // get messages for channel part step - 2
-    const getChannelMessages = async() => {
-        try {
-            const response = await apiClient.get(
-              `${GET_CHANNEL_MESSAGES}/${selectedChatData._id}`,
+    // const getChannelMessages = async() => {
+    //     try {
+    //         const response = await apiClient.get(
+    //           `${GET_CHANNEL_MESSAGES}/${selectedChatData._id}`,
               
-              { withCredentials: true }
-            );
-            if (response.data.messages) {
-              setSelectedChatMessages(response.data.messages);
-            }
-          } catch (error) {
-            console.log({error}, "error from get messages function");
-            toast.error(error.message)
-          }
-    }
+    //           { withCredentials: true }
+    //         );
+    //         if (response.data.messages) {
+    //           setSelectedChatMessages(response.data.messages);
+    //         }
+    //       } catch (error) {
+    //         console.log({error}, "error from get messages function");
+    //         toast.error(error.message)
+    //       }
+    // }
+    const getChannelMessages = async () => {
+      try {
+        const response = await apiClient.get(
+          `${GET_CHANNEL_MESSAGES.replace(':channelId', selectedChatData._id)}`,  // Replacing the :channelId in URL
+          { withCredentials: true }
+        );
+        if (response.data.messages) {
+          setSelectedChatMessages(response.data.messages);
+        }
+      } catch (error) {
+        console.log({ error }, "error from get messages function");
+        toast.error(error.response.data);
+      }
+    };
     if (selectedChatData._id) {
       if (selectedChatType === "contact") getMessages();
       else if (selectedChatType === 'channel') getChannelMessages()
