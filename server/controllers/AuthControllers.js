@@ -20,8 +20,9 @@ export const signup = async(request, response, next) => {
         const user = await User.create({email, password});
         response.cookie("jwt", createToken(email, user.id), {
             maxAge,
-            secure: true,
-            sameSites: "None",
+            httpOnly: true,
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV !== 'development'
 
         })
            return response.status(200).json({
