@@ -17,7 +17,7 @@ export const AuthRoute = ({children}) => {
 }
 const MainLayout = () => {
     const {userInfo, setUserInfo} = useAppStore()
-    // console.log(userInfo);
+    // console.log({userInfo});
     const [loading, setLoading] = useState(true)
     useEffect(() => {
   const getUserData = async() => {

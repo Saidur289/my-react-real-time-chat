@@ -7,7 +7,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "../../components/ui/tabs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import {toast} from 'sonner'
@@ -23,7 +23,7 @@ const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  
   const validateSignup = () => {
   if(!email.length){
     toast.error('Email is required')
@@ -54,10 +54,11 @@ const Auth = () => {
   const handleSignup = async() => {
      try {
       if(validateSignup()){
-        const response = await apiClient.post(SIGNUP_ROUTE, {email, password})
-        if(response.status === 201){
-          setUserInfo(response.data.user)
+        const response = await apiClient.post(SIGNUP_ROUTE, {email, password}, {withCredentials: true})
+        if(response.status === 200){
           navigate('/profile')
+          setUserInfo(response.data.user)
+          
         }
         console.log({response});
       }
@@ -69,11 +70,15 @@ const Auth = () => {
   const handleLogin = async() => {
      try {
       if(validateLogin()){
-        const response = await apiClient.post(LOGIN_ROUTE, {email, password})
+        const response = await apiClient.post(LOGIN_ROUTE, {email, password}, {withCredentials: true})
         if(response.data.user.id){
           setUserInfo(response.data.user)
-          if(response.data.user.profileSetup) navigate('/chat')
-            else navigate('/profile')
+          if(response.data.user.profileSetup) {
+            return navigate('/chat')
+          } 
+            else {
+              return navigate('/profile')
+            }
         }
         // console.log(response);
       }
