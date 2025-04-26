@@ -18,7 +18,7 @@ const __dirname = path.resolve();
 const databaseURL = process.env.MONGODB_URI;
 
 app.use(cors({
-  origin: [process.env.ORIGIN, "http://localhost:5173"],
+  origin: ["https://my-react-real-time-chat.onrender.com", "http://localhost:5173"],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
   credentials: true,
 }));
