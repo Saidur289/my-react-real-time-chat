@@ -2,7 +2,7 @@
 export const HOST =
   import.meta.env.MODE === "development"
     ? "http://localhost:8747"
-    : "https://my-react-real-time-chat-1.onrender.com";
+    : "https://my-react-real-time-chat.onrender.com";
 export const AUTH_ROUTES = "/api/auth";
 export const SIGNUP_ROUTE = `${AUTH_ROUTES}/signup`;
 export const LOGIN_ROUTE = `${AUTH_ROUTES}/login`;

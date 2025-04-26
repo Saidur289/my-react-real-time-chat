@@ -56,8 +56,9 @@ export const login = async(request, response, next) => {
         }
         response.cookie("jwt", createToken(email, user.id), {
             maxAge,
-            secure: true,
-            sameSites: "None",
+            httpOnly: true,
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV !== 'development'
 
         })
            return response.status(201).json({
