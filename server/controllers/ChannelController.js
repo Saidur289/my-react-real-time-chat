@@ -45,12 +45,12 @@ export const getUserChannels = async (request, response, next) => {
 export const getChannelMessages = async (request, response, next) => {
     try {
      const {channelId} = request.params;
-    //  console.log({channelId});
+     console.log({channelId}, "channel id ");
      const channel = await Channel.findById(channelId).populate({
       path: "messages",
       populate: {
         path: "sender",
-        // select: "firstName lastName email _id image color"
+        select: "firstName lastName email _id image color"
       },
      });
     //  console.log("channels name info", {channel});
