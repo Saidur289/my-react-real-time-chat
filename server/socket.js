@@ -115,7 +115,7 @@ const setupSocket = (server) => {
               const memberSocketId = userSocketMap.get(member._id.toString());
               if (memberSocketId) {
                 io.to(memberSocketId).emit("receive-channel-message", finalData);
-                console.log(`✅ Message sent to member ${member._id}`);
+                // console.log(`✅ Message sent to member ${member._id}`);
               }
             });
           }
@@ -124,7 +124,7 @@ const setupSocket = (server) => {
           const adminSocketId = userSocketMap.get(channel.admin?._id?.toString());
           if (adminSocketId) {
             io.to(adminSocketId).emit("receive-channel-message", finalData);
-            console.log(`✅ Message sent to admin ${channel.admin._id}`);
+            // console.log(`✅ Message sent to admin ${channel.admin._id}`);
           }
       
         } catch (error) {
@@ -136,7 +136,7 @@ const setupSocket = (server) => {
         // console.log("when connection made:", userId);
         if(userId){
             userSocketMap.set(userId, socket.id);
-            console.log(`User connected: ${userId} with socket Id: ${socket.id}`);
+            // console.log(`User connected: ${userId} with socket Id: ${socket.id}`);
         }else{
             console.log("User Id not provided during connection");
         }

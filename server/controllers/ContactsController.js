@@ -78,7 +78,7 @@ export const getContactsForDMList = async (request, response, next) => {
             $sort: {lastMessageTime: -1},
         },
      ])
-        console.log({contacts}, 'contacts controller function');
+        // console.log({contacts}, 'contacts controller function');
        return response.status(200).json({contacts})
     } catch (error) {
         console.log('Error From Search contact function   function Contacts Controller',error);

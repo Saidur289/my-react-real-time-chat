@@ -12,7 +12,7 @@ const createToken = (email, userId) => {
 export const signup = async(request, response, next) => {
     try {
         const {email, password} = request.body
-        console.log('show from sign up page authcontroller', email, password);
+        // console.log('show from sign up page authcontroller', email, password);
         if(!email || !password){
             return response.status(400).send("Email and Password are Required")
 
@@ -136,7 +136,7 @@ export const addProfileImage = async (request, response, next) => {
           let fileName = 'uploads/profiles/' + date + request.file.originalname
           renameSync(request.file.path, fileName)
           const updateUser = await User.findByIdAndUpdate(request.userId, {image: fileName}, {new: true, runValidators: true})
-          console.log(updateUser.image, 'add profile image');
+        //   console.log(updateUser.image, 'add profile image');
         return response.status(200).json({    
                 image: updateUser.image,
                 

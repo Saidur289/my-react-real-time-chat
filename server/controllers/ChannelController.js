@@ -19,7 +19,7 @@ export const createChannel = async (request, response, next) => {
         members,
         admin: userId
       })
-      console.log("new channel members", {newChannel});
+      // console.log("new channel members", {newChannel});
       await newChannel.save()
       return response.status(200).json({channel: newChannel})
     } catch (error) {
@@ -34,7 +34,7 @@ export const getUserChannels = async (request, response, next) => {
         const channels =await Channel.find({
           $or: [{admin: userId}, {members: userId}],
         }).sort({updatedAt: -1})
-        console.log(`${channels} data is for all channel get user channles functions`);
+        // console.log(`${channels} data is for all channel get user channles functions`);
       return response.status(200).json({channels})
     } catch (error) {
         console.log('Error From getUserChannels  function Channel  Controller',error);

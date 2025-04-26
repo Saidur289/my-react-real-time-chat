@@ -56,13 +56,13 @@ export const createChatSlice = (set, get) => ({
         const fromData = message.sender._id === userId ? message.recipient : message.sender;
         const data = dmContacts.find((contact) => contact._id === fromId);
         const index = dmContacts.findIndex((contact) => contact._id === fromId);
-        console.log({data, index, dmContacts, userId, message, fromData});
+        // console.log({data, index, dmContacts, userId, message, fromData});
         if(index !== -1 && index !== undefined){
-            console.log("in if condition");
+            // console.log("in if condition");
             dmContacts.splice(index, 1)
             dmContacts.unshift(data)
         }else{
-            console.log("in else condition ");
+            // console.log("in else condition ");
             dmContacts.unshift(fromData)
         }
         set({directMessagesContacts: dmContacts})
