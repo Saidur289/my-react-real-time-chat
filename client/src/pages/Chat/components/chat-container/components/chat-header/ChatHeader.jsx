@@ -25,15 +25,17 @@ const ChatHeader = () => {
                     className="object-cover w-full h-full bg-black"
                   />
                 ) : (
+                selectedChatData.firstName.length > 0 && (
                   <div
-                    className={`uppercase rounded-full h-12 w-12 text-lg border-[1px] flex items-center justify-center  ${getColor(
-                      selectedChatData?.color
-                    )}`}
-                  >
-                    {selectedChatData?.firstName
-                      ? selectedChatData?.firstName.split("").shift()
-                      : selectedChatData.email.split("").shift()}
-                  </div>
+                  className={`uppercase rounded-full h-12 w-12 text-lg border-[1px] flex items-center justify-center  ${getColor(
+                    selectedChatData?.color
+                  )}`}
+                >
+                  {selectedChatData?.firstName
+                    ? selectedChatData?.firstName.split("").shift()
+                    : selectedChatData.email.split("").shift()}
+                </div>
+                )
                 )}
               </Avatar>
             ) : (
