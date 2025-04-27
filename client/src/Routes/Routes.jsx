@@ -31,8 +31,8 @@ const router = createBrowserRouter([
         element: <PrivateRoute><Chat></Chat></PrivateRoute>
       },
       {
-        path: "*",
-        element: <Navigate to={'/auth'}/>
+        path: "/",
+        element: <AuthRoute><Auth></Auth></AuthRoute>
       }
     ]
   },

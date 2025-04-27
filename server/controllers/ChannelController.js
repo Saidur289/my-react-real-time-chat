@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Channel from "../models/ChannelModel.js";
 import User from "../models/UserModel.js";
+// import { io } from "../socket.js";
 
 export const createChannel = async (request, response, next) => {
     try {
@@ -21,6 +22,8 @@ export const createChannel = async (request, response, next) => {
       })
       // console.log("new channel members", {newChannel});
       await newChannel.save()
+      // Emit socket event for new channel
+    // io.emit('new-channel', newChannel); // Make sure `io` is correctly initialized
       return response.status(200).json({channel: newChannel})
     } catch (error) {
         console.log('Error From createChannel  function Channel  Controller',error);

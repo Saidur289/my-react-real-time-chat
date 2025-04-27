@@ -10,6 +10,7 @@ export const SocketProvider = ({children}) => {
    
     const socket = useRef()
     const {userInfo} = useAppStore()
+    // const addChannelInChannelList = useAppStore((state) => state.addChannelInChannelList);
     useEffect(() => {
       if(userInfo){
         socket.current = io(HOST, {
@@ -38,9 +39,21 @@ export const SocketProvider = ({children}) => {
 
 
         }
-
+        //  Handle receiving new channel event
+        //  const handleNewChannel = (newChannel) => {
+        //     const { addChannelInChannelList } = useAppStore.getState();
+        //     addChannelInChannelList(newChannel);
+        //     console.log("New channel received:", newChannel);
+        // };
         socket.current.on("receiveMessage", handleReceiveMessage)
         socket.current.on("receive-channel-message", handleReceiveChannelMessage)
+        // socket.current.on("new-channel", handleNewChannel); // Listen for new-channel event
+        // socket.current.on("new-channel", (newChannel) => {
+        //     console.log("New channel received:", newChannel);
+        //     addChannelInChannelList(newChannel);
+        //     // getChannels(); // চাইলে এটা দিলেও হবে, তবে শুধু addChannelInChannelList দিলেই real-time এ নতুন চ্যানেল আসবে
+        //   });
+          
         return () => {
             socket.current.disconnect();
         }

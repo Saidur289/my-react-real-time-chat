@@ -18,7 +18,7 @@ const ContactList = ({contacts, isChannel=false}) => {
     }
 
     return (
-        <div className="mt-5">
+    <div className="mt-5">
             {
                 contacts?.map((contact,index) => (
                     <div key={index} className={`pl-10 py-2 transition-all duration-300 cursor-pointer ${selectedChatData && selectedChatData._id === contact._id? "bg-[#8417ff] hover:bg-[#B417ff]": "hover:bg-[#f1f1f111]"}`} onClick={() => handleClick(contact)}>

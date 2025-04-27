@@ -27,7 +27,26 @@ const ContactsContainer = () => {
 
       }
     } 
+    // const getChannels = async () => {
+    //   try {
+    //     // Fetch channels from the API
+    //     const response = await apiClient.get(GET_USER_CHANNEL_ROUTE, { withCredentials: true });
+    
+    //     if (response.data.channels) {
+    //       // Set channels into the store
+    //       setChannels(response.data.channels);
+          
+    //       // Optionally, if you want to add each channel to the list using your store action
+    //       response.data.channels.forEach(channel => {
+    //         addChannelInChannelList(channel); // Use the store action to add each channel
+    //       });
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching channels:", error);
+    //   }
+    // };
     getContacts()
+
     getChannels()
   }, [setChannels, setDirectMessagesContacts])
     return (

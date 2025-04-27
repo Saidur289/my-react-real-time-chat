@@ -93,7 +93,7 @@ export const getUserInfo = async (request, response, next) => {
                 profileSetup: userData.profileSetup,
                 firstName: userData.firstName,
                 lastName: userData.lastName,
-                image: userData.image,
+            image: userData.image,
                 color: userData.color
            })
     } catch (error) {
