@@ -95,7 +95,7 @@ export const getAllContact = async (request, response, next) => {
         value: user._id,
      }))
        
-     console.log({contacts}, "show in get all contacts ");
+    //  console.log({contacts}, "show in get all contacts ");
        return response.status(200).json({contacts})
     } catch (error) {
         console.log('Error From get all contacts   function Contacts Controller',error);
