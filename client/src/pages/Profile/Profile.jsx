@@ -9,7 +9,7 @@ import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { toast } from "sonner";
 import { apiClient } from "../../lib/api-client";
-import { ADD_PROFILE_IMAGE_ROUTE, HOST, REMOVE_PROFILE_IMAGE_ROUTE, UPDATE_PROFILE_ROUTE } from "../../utils/constaints";
+import { ADD_PROFILE_IMAGE_ROUTE, REMOVE_PROFILE_IMAGE_ROUTE, UPDATE_PROFILE_ROUTE } from "../../utils/constaints";
 
 const Profile = () => {
   const { userInfo, setUserInfo } = useAppStore();
@@ -31,9 +31,9 @@ const Profile = () => {
         setSelectedColor(userInfo.color)
     }
     if(userInfo.image){
-        // setImage(`${HOST}/${userInfo?.image}`)
+        // setImage(`${}/${userInfo?.image}`)
         setImage(userInfo?.image)
-        console.log(`${HOST}/${userInfo?.image}`, "kene cholor");
+        // console.log({userInfo?.image} "kene cholor");
     }
   }, [userInfo])
 // function for validate profile 

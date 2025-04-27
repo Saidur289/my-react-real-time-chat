@@ -35,7 +35,7 @@ const MainLayout = () => {
      } catch (error) {
         setUserInfo(undefined)
         console.log('Error from mainlayout component', error);
-        toast.error(error.message)
+        // toast.error(error.message)
      }
      finally{
         setLoading(false)

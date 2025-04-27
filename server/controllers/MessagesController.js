@@ -16,7 +16,7 @@ export const getMessages = async (request, response, next) => {
                 {sender: user2, recipient: user1}
             ]
         }).sort({timestamp: 1})
-       console.log( "show from getMessages function",{messages});
+    //    console.log( "show from getMessages function",{messages});
        return response.status(200).json({messages})
     } catch (error) {
         console.log('Error From getMessages function   function Messages Controller',error);
