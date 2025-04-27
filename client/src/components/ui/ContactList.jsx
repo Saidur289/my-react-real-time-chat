@@ -5,6 +5,7 @@ import { Avatar, AvatarImage } from "./avatar";
 
 
 const ContactList = ({contacts, isChannel=false}) => {
+    
     const {setSelectedChatData, setSelectedChatMessages,  setSelectedChatType,   selectedChatData, selectedChatType} = useAppStore()
     const handleClick = (contact) => {
         if(isChannel) setSelectedChatType("channel")

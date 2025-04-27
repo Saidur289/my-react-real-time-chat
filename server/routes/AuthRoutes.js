@@ -3,7 +3,9 @@ import{Router} from 'express'
 import { verifyToken } from "../middlewares/AuthMiddleware.js"
 import multer from "multer"
 const authRoutes = Router()
-const upload = multer({dest: "uploads/profiles/"})
+// const upload = multer({dest: "uploads/profiles/"})
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 authRoutes.post('/signup', signup)
 authRoutes.post('/login', login)
 authRoutes.get('/user-info',verifyToken,  getUserInfo)

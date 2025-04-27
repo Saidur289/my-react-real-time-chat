@@ -1,7 +1,13 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/UserModel.js'
 import { compare } from 'bcrypt'
-import {renameSync, unlinkSync} from 'fs'
+import {renameSync, unlinkSync, existsSync} from 'fs'
+import path from 'path';
+import { fileURLToPath } from 'url';
+import cloudinary from '../lib/cloudinary.js';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // create jwt token for validate 
 const maxAge = 3 * 24 * 60 * 60 *1000
 const createToken = (email, userId) => {
@@ -128,46 +134,110 @@ export const updateProfile = async (request, response, next) => {
         
     }
 }
+// export const addProfileImage = async (request, response, next) => {
+//     try {
+//           if(!request.file){
+//             return response.status(400).send('File is Required')
+
+//           }
+//           const date = Date.now()
+//           let fileName = 'uploads/profiles/' + date + request.file.originalname
+//           renameSync(request.file.path, fileName)
+//           const updateUser = await User.findByIdAndUpdate(request.userId, {image: fileName}, {new: true, runValidators: true})
+//         //   console.log(updateUser.image, 'add profile image');
+//         return response.status(200).json({    
+//                 image: updateUser.image,
+                
+//            })
+//     } catch (error) {
+//         console.log('Error From add  profile update  function Auth Controller',error);
+//         return response.status(500).send("Internal Server Error");
+        
+//     }
+// }
+// export const removeProfileImage = async (request, response, next) => {
+//     try {
+//         const {userId} = request
+//         const user = await User.findById(userId)
+//         if(!user){
+//             return response.status(400).send('User Not Found')
+//         }
+//        if(user.image){
+//         unlinkSync(user.image)
+//        }
+//         user.image = null;
+//         await user.save()
+//        return response.status(200).send('Profile image removed successfully')
+//     } catch (error) {
+//         console.log('Error From Get profile update  function Auth Controller',error);
+//         return response.status(500).send("Internal Server Error");
+        
+//     }
+// }
+
 export const addProfileImage = async (request, response, next) => {
     try {
-          if(!request.file){
-            return response.status(400).send('File is Required')
-
+      if (!request.file) {
+        return response.status(400).send("File is Required");
+      }
+  
+      // Upload file to Cloudinary
+      const result = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            folder: "profiles", // Cloudinary এর মধ্যে profiles নামে ফোল্ডার হবে
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
           }
-          const date = Date.now()
-          let fileName = 'uploads/profiles/' + date + request.file.originalname
-          renameSync(request.file.path, fileName)
-          const updateUser = await User.findByIdAndUpdate(request.userId, {image: fileName}, {new: true, runValidators: true})
-        //   console.log(updateUser.image, 'add profile image');
-        return response.status(200).json({    
-                image: updateUser.image,
-                
-           })
+        );
+  
+        uploadStream.end(request.file.buffer);
+      });
+  
+      // Save image URL to Database
+      const updateUser = await User.findByIdAndUpdate(
+        request.userId,
+        { image: result.secure_url }, // Cloudinary এর URL save হবে
+        { new: true, runValidators: true }
+      );
+  
+      return response.status(200).json({
+        image: updateUser.image, // Return the uploaded image URL
+      });
     } catch (error) {
-        console.log('Error From add  profile update  function Auth Controller',error);
-        return response.status(500).send("Internal Server Error");
-        
+      console.log("Error From add profile update function Auth Controller", error);
+      return response.status(500).send("Internal Server Error");
     }
-}
+  };
 export const removeProfileImage = async (request, response, next) => {
-    try {
-        const {userId} = request
-        const user = await User.findById(userId)
-        if(!user){
-            return response.status(400).send('User Not Found')
-        }
-       if(user.image){
-        unlinkSync(user.image)
-       }
-        user.image = null;
-        await user.save()
-       return response.status(200).send('Profile image removed successfully')
-    } catch (error) {
-        console.log('Error From Get profile update  function Auth Controller',error);
-        return response.status(500).send("Internal Server Error");
-        
+  try {
+    const { userId } = request;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return response.status(400).send('User Not Found');
     }
-}
+
+    if (user.image) {
+      const filePath = path.join(__dirname, '../uploads/profiles', path.basename(user.image));
+
+      if (existsSync(filePath)) {
+        unlinkSync(filePath);
+      }
+    }
+
+    user.image = null;
+    await user.save();
+    return response.status(200).send('Profile image removed successfully');
+    
+  } catch (error) {
+    console.log('Error From Get profile update function Auth Controller', error);
+    return response.status(500).send('Internal Server Error');
+  }
+};
+
 export const logout = async (request, response, next) => {
     try {
        response.cookie("jwt", "", {maxAge: 1, secure: true, sameSites: 'None'})

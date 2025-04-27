@@ -31,7 +31,8 @@ const Profile = () => {
         setSelectedColor(userInfo.color)
     }
     if(userInfo.image){
-        setImage(`${HOST}/${userInfo?.image}`)
+        // setImage(`${HOST}/${userInfo?.image}`)
+        setImage(userInfo?.image)
         console.log(`${HOST}/${userInfo?.image}`, "kene cholor");
     }
   }, [userInfo])
