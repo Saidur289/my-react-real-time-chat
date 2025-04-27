@@ -29,6 +29,7 @@ const MessageContainer = () => {
   // state for show image big
   const [showImage, setShowImage] = useState(false);
   const [imageURL, setImageURL] = useState(null);
+  // console.log({imageURL});
 //   console.log("selected chat messages",{});
   // fetch for get all message data step - 1
   useEffect(() => {
@@ -114,29 +115,68 @@ const MessageContainer = () => {
     });
   };
   // function for download file
+  // const downloadFile = async (url) => {
+  //   setIsDownloading(true);
+  //   setFileDownloadingProgress(0);
+  //   const response = await apiClient.get(`${HOST}/${url}`, {
+  //     responseType: "blob",
+  //     onDownloadProgress: (progressEvent) => {
+  //       const { loaded, total } = progressEvent;
+  //       const percentCompleted = Math.round((loaded * 100) / total);
+  //       setFileDownloadingProgress(percentCompleted);
+  //     },
+  //   });
+  //   const urlBlob = window.URL.createObjectURL(new Blob([response.data]));
+  //   const link = document.createElement("a");
+  //   link.href = urlBlob;
+  //   // console.log('clicked me', {urlBlob});
+  //   link.setAttribute("download", url.split("/").pop());
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   link.remove();
+  //   window.URL.revokeObjectURL(urlBlob);
+  //   setIsDownloading(false);
+  //   setFileDownloadingProgress(0);
+  // };
+  
   const downloadFile = async (url) => {
     setIsDownloading(true);
     setFileDownloadingProgress(0);
-    const response = await apiClient.get(`${HOST}/${url}`, {
-      responseType: "blob",
-      onDownloadProgress: (progressEvent) => {
-        const { loaded, total } = progressEvent;
-        const percentCompleted = Math.round((loaded * 100) / total);
-        setFileDownloadingProgress(percentCompleted);
-      },
-    });
-    const urlBlob = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement("a");
-    link.href = urlBlob;
-    // console.log('clicked me', {urlBlob});
-    link.setAttribute("download", url.split("/").pop());
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    window.URL.revokeObjectURL(urlBlob);
-    setIsDownloading(false);
-    setFileDownloadingProgress(0);
+  
+    try {
+      const response = await apiClient.get(url, {
+        responseType: "blob", // Ensure that the response type is blob
+        onDownloadProgress: (progressEvent) => {
+          const { loaded, total } = progressEvent;
+          const percentCompleted = Math.round((loaded * 100) / total);
+          setFileDownloadingProgress(percentCompleted);
+        },
+      });
+  
+      // Create a URL for the blob data
+      const urlBlob = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+  
+      // Set the filename for the download
+      link.href = urlBlob;
+      link.setAttribute("download", url.split("/").pop()); // Extract the file name from URL
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+  
+      // Clean up and revoke the blob URL
+      window.URL.revokeObjectURL(urlBlob);
+  
+      // Reset the progress and downloading state
+      setIsDownloading(false);
+      setFileDownloadingProgress(0);
+    } catch (error) {
+      console.error("Error while downloading file:", error);
+      setIsDownloading(false);
+      setFileDownloadingProgress(0);
+    }
   };
+  
   // function for send message
   const renderDMMessages = (message) => (
     <div
@@ -171,8 +211,9 @@ const MessageContainer = () => {
                 setImageURL(message.fileUrl);
               }}
             >
+              {/* {console.log(message.fileUrl)} */}
               <img
-                src={`${HOST}/${message.fileUrl}`}
+                src={message.fileUrl}
                 width={300}
                 height={300}
                 alt="send image"
@@ -236,7 +277,7 @@ const MessageContainer = () => {
               }}
             >
               <img
-                src={`${HOST}/${message.fileUrl}`}
+                src={message.fileUrl}
                 width={300}
                 height={300}
                 alt="send image"
@@ -262,7 +303,7 @@ const MessageContainer = () => {
                  <Avatar className="h-8 w-8 rounded-full overflow-hidden">
                 {selectedChatData?.image && (
                   <AvatarImage
-                    src={`${HOST}/${message?.sender?.image}`}
+                    src={message?.sender?.image}
                     alt="profile image"
                     className="object-cover w-full h-full bg-black"
                   />
@@ -292,7 +333,7 @@ const MessageContainer = () => {
         <div className="fixed z-[1000] top-0 left-0 w-[100vw] flex items-center justify-center backdrop-blur-lg flex-col">
           <div>
             <img
-              src={`${HOST}/${imageURL}`}
+              src={imageURL}
               className="h-[100vh] w-full bg-cover"
               alt="big image"
             />

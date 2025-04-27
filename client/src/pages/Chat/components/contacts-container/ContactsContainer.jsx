@@ -9,8 +9,8 @@ import CreateChannel from "./components/create-channel/CreateChannel";
 
 
 const ContactsContainer = () => {
-  const { setChannels,setDirectMessagesContacts, directMessagesContacts, channels, userInfo} = useAppStore()
-  console.log({userInfo});
+  const { setChannels,setDirectMessagesContacts, directMessagesContacts, channels} = useAppStore()
+  // console.log({userInfo});
   useEffect(() => {
     const getContacts = async() => {
       const response = await apiClient.get(GET_CONTACTS_ROUTES, {withCredentials: true})
@@ -50,7 +50,7 @@ const ContactsContainer = () => {
 
     getChannels()
   }, [setChannels, setDirectMessagesContacts])
-  console.log({directMessagesContacts});
+  // console.log({directMessagesContacts});
     return (
         <div className="relative md:w-[40vw] lg:w-[35vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b] w-full">
             <div className="pt-3">

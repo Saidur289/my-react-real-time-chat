@@ -1,12 +1,11 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/UserModel.js'
 import { compare } from 'bcrypt'
-import {renameSync, unlinkSync, existsSync} from 'fs'
-import path from 'path';
+// import path from 'path';
 import { fileURLToPath } from 'url';
 import cloudinary from '../lib/cloudinary.js';
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+
 
 // create jwt token for validate 
 const maxAge = 3 * 24 * 60 * 60 *1000
@@ -211,33 +210,60 @@ export const addProfileImage = async (request, response, next) => {
       return response.status(500).send("Internal Server Error");
     }
   };
-export const removeProfileImage = async (request, response, next) => {
-  try {
-    const { userId } = request;
-    const user = await User.findById(userId);
+// export const removeProfileImage = async (request, response, next) => {
+//   try {
+//     const { userId } = request;
+//     const user = await User.findById(userId);
 
-    if (!user) {
-      return response.status(400).send('User Not Found');
-    }
+//     if (!user) {
+//       return response.status(400).send('User Not Found');
+//     }
 
-    if (user.image) {
-      const filePath = path.join(__dirname, '../uploads/profiles', path.basename(user.image));
+//     if (user.image) {
+//       const filePath = path.join(__dirname, '../uploads/profiles', path.basename(user.image));
 
-      if (existsSync(filePath)) {
-        unlinkSync(filePath);
-      }
-    }
+//       if (existsSync(filePath)) {
+//         unlinkSync(filePath);
+//       }
+//     }
 
-    user.image = null;
-    await user.save();
-    return response.status(200).send('Profile image removed successfully');
+//     user.image = null;
+//     await user.save();
+//     return response.status(200).send('Profile image removed successfully');
     
-  } catch (error) {
-    console.log('Error From Get profile update function Auth Controller', error);
-    return response.status(500).send('Internal Server Error');
-  }
-};
-
+//   } catch (error) {
+//     console.log('Error From Get profile update function Auth Controller', error);
+//     return response.status(500).send('Internal Server Error');
+//   }
+// };
+export const removeProfileImage = async (request, response, next) => {
+    try {
+      const { userId } = request;
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        return response.status(400).send('User Not Found');
+      }
+  
+      if (user.image) {
+        // Extract public_id from Cloudinary URL
+        const parts = user.image.split('/');
+        const fileName = parts[parts.length - 1]; // Example: abcdxyz.png
+        const publicId = 'profiles/' + fileName.split('.')[0]; // Remove extension
+  
+        // Destroy from cloudinary
+        await cloudinary.uploader.destroy(publicId);
+      }
+  
+      user.image = null;
+      await user.save();
+      return response.status(200).send('Profile image removed successfully');
+      
+    } catch (error) {
+      console.log('Error From remove profile image function', error);
+      return response.status(500).send('Internal Server Error');
+    }
+  };
 export const logout = async (request, response, next) => {
     try {
        response.cookie("jwt", "", {maxAge: 1, secure: true, sameSites: 'None'})
