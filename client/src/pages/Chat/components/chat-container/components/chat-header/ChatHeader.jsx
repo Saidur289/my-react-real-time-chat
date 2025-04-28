@@ -25,7 +25,7 @@ const ChatHeader = () => {
                     className="object-cover w-full h-full bg-black"
                   />
                 ) : (
-                selectedChatData.firstName.length > 0 && (
+                selectedChatData   && (
                   <div
                   className={`uppercase rounded-full h-12 w-12 text-lg border-[1px] flex items-center justify-center  ${getColor(
                     selectedChatData?.color
