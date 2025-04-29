@@ -7,7 +7,7 @@ import { useSocket } from "../../../../../../context/SocketContext";
 import { useAppStore } from "../../../../../../store";
 import { apiClient } from "../../../../../../lib/api-client";
 import { UPLOAD_FILE_ROUTE } from "../../../../../../utils/constaints";
-import { data } from "react-router-dom";
+
 
 const MessageBar = () => {
   const [message, setMessage] = useState("");
@@ -184,6 +184,7 @@ const MessageBar = () => {
               autoFocusSearch={false}
             />
           </div>
+        
         </div>
       </div>
       <button
